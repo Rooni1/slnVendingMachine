@@ -10,5 +10,6 @@ namespace VendingMachine.Model
         string ItemsInfo();
         int ProductPrice();
         string ProductName();
+        string ProductUse();
     }
 }

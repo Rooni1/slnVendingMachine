@@ -60,6 +60,11 @@ namespace VendingMachine.Model
         {
             return ChocoName;
         }
+        public override string ProductUse()
+        {
+            string outMessage = "Here is your" + " " + ChocoName + " " + "please eat it";
+            return outMessage;
+        }
 
     }
 }

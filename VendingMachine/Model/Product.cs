@@ -32,14 +32,13 @@ namespace VendingMachine.Model
         }
 
         public Product(int productId, string productType)
-        { 
+        {
             this.productId = productId;
             this.ProductType = productType;
         }
         public Product(string productType)
         {
-          
-            this.ProductType = productType;
+          this.ProductType = productType;
         }
         public Product()
         {
@@ -59,7 +58,11 @@ namespace VendingMachine.Model
         }
         public virtual string ProductName()
         {
-            return $"Product Type:{ProductType}\n";
+            return $"";
+        }
+        public virtual string ProductUse()
+        {
+            return $"";
         }
 
 

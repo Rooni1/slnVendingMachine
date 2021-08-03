@@ -12,51 +12,126 @@ namespace VendingMachine.Test
         public void AddproductsTest()
         {
             //Arrange
-            string expectedProductType = "Drink";
-            string expectedProductName = "Pepsi";
-            int expectedProductPrice = 25;
-            VendingMyMachine MyVendingMachine = new VendingMyMachine();
-            List<Product> testProductList = new List<Product>();
            
+            VendingMyMachine MyVendingMachine = new VendingMyMachine();
+            List<Product> actualProductList = new List<Product>();
+            Product testProduct = new Drink(ProductIdGenrator.nextProductId(),"Drink","Pepsi", 28 );
 
             //Act
-            testProductList = MyVendingMachine.AddProducts(expectedProductType, expectedProductName, expectedProductPrice);
+            actualProductList = MyVendingMachine.AddProducts(testProduct);
            
 
             //Assert
-            Assert.Equal(expectedProductType, testProductList[0].ProductType);
-            Assert.Equal(expectedProductName, testProductList[0].ProductName());
-            Assert.Equal(expectedProductPrice, testProductList[0].ProductPrice());
+            Assert.Equal("Drink", actualProductList[0].ProductType);
+            Assert.Equal("Pepsi", actualProductList[0].ProductName());
+            Assert.Equal(28, actualProductList[0].ProductPrice());
 
         }
         [Fact]
-        public void ProductUseTest()
+        public void InsertMoneyTest()
         {
             //Arrange
-            string expectedProductType = "Drink";
-            string expectedProductName = "Pepsi";
-            string expectedMessage = "Here is your" + " " + expectedProductName + " " + "please drink it";
-            string expectedProductType1 = "Chocolate";
-            string expectedProductName1 = "Kitkat";
-            string expectedMessage1 = "Here is your" + " " + expectedProductName1 + " " + "please eat it";
-            string expectedProductType2 = "Chocolate";
-            string expectedProductName2 = "Kitkat";
-            string expectedMessage2 = "Here is your" + " " + expectedProductName2 + " " + "please eat it";
-
 
             VendingMyMachine MyVendingMachine = new VendingMyMachine();
-            
+            int expectedCurrentBalance = 50;
 
             //Act
-            string actualMessage = MyVendingMachine.ProductUse(expectedProductType, expectedProductName);
-            string actualMessage1 = MyVendingMachine.ProductUse(expectedProductType1, expectedProductName1);
-            string actualMessage2 = MyVendingMachine.ProductUse(expectedProductType2, expectedProductName2);
+            int actualCurrentBalance = MyVendingMachine.InsertMoney(expectedCurrentBalance);
 
 
             //Assert
-            Assert.Equal(expectedMessage, actualMessage);
-            Assert.Equal(expectedMessage1, actualMessage1);
-            Assert.Equal(expectedMessage2, actualMessage2);
+            Assert.Equal(expectedCurrentBalance,actualCurrentBalance);
+           
+
+        }
+        [Fact]
+        public void NotValidDenominationTest()
+        {
+            //Arrange
+
+            VendingMyMachine MyVendingMachine = new VendingMyMachine();
+            int expectedCurrentBalance = 45;
+
+            //Act
+           
+            var caughtException = Assert.Throws<ArgumentException>(() =>
+                                        MyVendingMachine.InsertMoney(expectedCurrentBalance));
+
+            //Assert
+
+            Assert.Equal("Entered Money is not a valid Denomination", caughtException.Message);
+
+        }
+        [Fact]
+        public void EnterZeroTest()
+        {
+            //Arrange
+
+            VendingMyMachine MyVendingMachine = new VendingMyMachine();
+            int expectedCurrentBalance = 0;
+
+            //Act
+
+            var caughtException = Assert.Throws<ArgumentException>(() =>
+                                        MyVendingMachine.InsertMoney(expectedCurrentBalance));
+
+            //Assert
+
+            Assert.Equal("Entered Money is not a valid Denomination", caughtException.Message);
+
+        }
+        [Fact]
+        public void PurchaseTest()
+        {
+            //Arrange
+
+            VendingMyMachine MyVendingMachine = new VendingMyMachine();
+            List<Product> testProductList = new List<Product>();
+            Product testProduct = new Drink(ProductIdGenrator.nextProductId(), "Drink", "Pepsi", 30);
+            Product testProduct1 = new Chocolate(ProductIdGenrator.nextProductId(), "Chocolate", "Kitkat", 60);
+            Product testProduct2 = new Snacks(ProductIdGenrator.nextProductId(), "Snacks", "Chips", 40);
+            testProductList = MyVendingMachine.AddProducts(testProduct);
+            testProductList = MyVendingMachine.AddProducts(testProduct1);
+            testProductList = MyVendingMachine.AddProducts(testProduct2);
+            int currentBalance = MyVendingMachine.InsertMoney(100);
+            int expectedCurrentBalance = 40;
+
+            //Act
+
+            int actualCurrentBalance = MyVendingMachine.Purchase(testProductList[1].ProductId);
+
+
+            //Assert
+            Assert.Equal(expectedCurrentBalance, actualCurrentBalance);
+           
+
+        }
+        [Fact]
+        public void PurchaseException()
+        {
+            //Arrange
+
+            VendingMyMachine MyVendingMachine = new VendingMyMachine();
+            List<Product> testProductList = new List<Product>();
+            Product testProduct = new Drink(ProductIdGenrator.nextProductId(), "Drink", "Pepsi", 30);
+            Product testProduct1 = new Chocolate(ProductIdGenrator.nextProductId(), "Chocolate", "Kitkat", 60);
+            Product testProduct2 = new Snacks(ProductIdGenrator.nextProductId(), "Snacks", "Chips", 40);
+            testProductList = MyVendingMachine.AddProducts(testProduct);
+            testProductList = MyVendingMachine.AddProducts(testProduct1);
+            testProductList = MyVendingMachine.AddProducts(testProduct2);
+            int currentBalance = MyVendingMachine.InsertMoney(50);
+           
+
+            //Act
+
+           
+            var actualException = Assert.Throws<ArgumentException>(() =>
+                                        MyVendingMachine.Purchase(testProductList[1].ProductId));
+
+
+            //Assert
+            Assert.Equal("You donot have saficent money to buy this item", actualException.Message);
+
 
         }
 

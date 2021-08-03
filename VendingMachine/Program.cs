@@ -11,10 +11,23 @@ namespace VendingMachine
         {
             // UI is not implimentede
             // Here is some code to check evering thing is working.
-            /*VendingMyMachine VM = new VendingMyMachine();
-            VM.Purchase("Drink","Sprit",15); // To check if purchase process and other methods implimented works.
-            VM.Purchase("Chocolate", "Kitkat", 10);
-            VM.Purchase("Snacks", "Chips", 25);*/
+            VendingMyMachine VM = new VendingMyMachine();
+         
+            List<Product> myProductList = new List<Product>()
+            {
+                    new Drink(ProductIdGenrator.nextProductId(), "Drink", "Cola", 20),
+                    new Chocolate(ProductIdGenrator.nextProductId(), "Chocolate", "Kitkat", 10),
+                    new Snacks(ProductIdGenrator.nextProductId(), "Snacks", "Chips", 25)
+            };
+            foreach (Product product in myProductList)
+            {
+                VM.AddProducts(product);
+  
+            }
+            VM.ShowAll(myProductList);
+
+
+
 
 
 

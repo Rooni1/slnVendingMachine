@@ -17,9 +17,7 @@ namespace VendingMachine.Test
 
             //Act
             Drink actualDrink = new Drink(expectedProductId, 
-                                           expectedProductType, expecteddrinkName, expecteddrinkPrice);
-
-
+                                          expectedProductType, expecteddrinkName, expecteddrinkPrice);
             //Assert
             Assert.Equal(expectedProductId, actualDrink.ProductId);
             Assert.Equal(expectedProductType, actualDrink.ProductType);
@@ -38,12 +36,10 @@ namespace VendingMachine.Test
             ProductIdGenrator.Reset();
 
             //Act
-            Drink actualDrink = new Drink(ProductIdGenrator.nextPersonId(), expectedProductType, 
+            Drink actualDrink = new Drink(ProductIdGenrator.nextProductId(), expectedProductType, 
                                                             expecteddrinkName,expecteddrinkPrice);
-
-
             //Assert
-            Assert.NotEqual(expectedProductId, ProductIdGenrator.nextPersonId());
+            Assert.NotEqual(expectedProductId, ProductIdGenrator.nextProductId());
             Assert.Equal(expectedProductType, actualDrink.ProductType);
             Assert.Equal(expecteddrinkName, actualDrink.DrinkName);
             Assert.Equal(expecteddrinkPrice, actualDrink.DrinkPrice);
@@ -87,9 +83,6 @@ namespace VendingMachine.Test
             Assert.Equal("Drink Name can't be empty Please Fill Drink Name Please", caughtDrinkException.Message);
 
         }
-
-       
-
 
     }
 }

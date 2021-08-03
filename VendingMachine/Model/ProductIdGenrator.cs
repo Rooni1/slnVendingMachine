@@ -9,7 +9,7 @@ namespace VendingMachine.Model
         private static int productId;
         public int ProductId { get { return productId; } }
 
-        public static int nextPersonId()
+        public static int nextProductId()
         {
             return ++productId;
         }
